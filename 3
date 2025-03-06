@@ -1,0 +1,93 @@
+// 配置数据
+const CONFIG = {
+    cat: {
+        name: "Luna",
+        birth: "2015-03-12",
+        passing: "2023-08-20",
+        traits: ["Curious", "Gentle", "Loves Salmon"],
+        memories: ["luna_beach.jpg", "luna_sleep.mp4"]
+    },
+    colors: {
+        background: "#0a192f",
+        catStroke: "#64ffda",
+        stars: "#8892b0"
+    }
+};
+
+// Canvas初始化
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getBoundingClientRect ? canvas.getContext('2d') : null;
+let width = window.innerWidth;
+let height = window.innerHeight;
+
+function initCanvas() {
+    canvas.width = width;
+    canvas.height = height;
+    
+    // 响应式调整
+    window.addEventListener('resize', () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    });
+}
+
+// 星空粒子系统
+class Star {
+    constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2;
+        this.alpha = Math.random();
+    }
+    draw() {
+        ctx.fillStyle = `rgba(136, 146, 176, ${this.alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+// 主程序
+if (ctx) {
+    initCanvas();
+    const stars = Array(200).fill().map(() => new Star());
+    
+    function animate() {
+        ctx.fillStyle = CONFIG.colors.background;
+        ctx.fillRect(0, 0, width, height);
+        
+        stars.forEach(star => {
+            star.draw();
+            star.alpha = 0.5 + Math.sin(Date.now() * 0.001) * 0.5;
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+// 记忆相册功能
+function showMemories() {
+    const modal = document.getElementById('modal');
+    const grid = document.getElementById('memory-grid');
+    
+    grid.innerHTML = CONFIG.cat.memories.map(file => `
+        <div class="memory-item">
+            ${file.endsWith('.mp4') ? 
+                `<video src="assets/${file}" controls></video>` : 
+                `<img src="assets/${file}" alt="Memory">`
+            }
+        </div>
+    `).join('');
+    
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+// 点击交互
+canvas.addEventListener('click', showMemories);
