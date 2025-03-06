@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Cat Urn - In Memory of Luna</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 内联关键CSS确保快速加载 */
+        body { margin: 0; overflow: hidden; }
+        #canvas { background: #0a192f; }
+        .memory-modal {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="memory-modal" id="modal">
+        <h2 id="cat-name">Luna's Memories</h2>
+        <div id="memory-grid"></div>
+        <button onclick="closeModal()">Close</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
